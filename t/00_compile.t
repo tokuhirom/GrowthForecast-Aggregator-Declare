@@ -1,4 +1,9 @@
 use strict;
-use Test::More tests => 1;
+use Test::More;
 
-BEGIN { use_ok 'GrowthForecast::Client::Declare' }
+use_ok $_ for qw(
+    GrowthForecast::Client::Declare
+    GrowthForecast::Client::DB
+    GrowthForecast::Client::DBMulti
+);
+done_testing;

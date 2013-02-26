@@ -1,9 +1,43 @@
 package GrowthForecast::Client::Declare;
 use strict;
 use warnings;
-use 5.010001;
+use 5.008001;
 our $VERSION = '0.01';
 
+use parent qw(Exporter);
+
+use GrowthForecast::Client::DB;
+use GrowthForecast::Client::DBMulti;
+
+our @EXPORT = qw(gf section db db_multi);
+
+our $_SECTION;
+our @_QUERIES;
+
+sub gf(&) {
+    local @_QUERIES;
+    $_[0]->();
+    return @_QUERIES;
+}
+
+sub section($&) {
+    local $_SECTION = shift;
+    $_[0]->();
+}
+
+sub db {
+    push @_QUERIES, GrowthForecast::Client::DB->new(
+        section => $_SECTION,
+        @_,
+    );
+}
+
+sub db_multi {
+    push @_QUERIES, GrowthForecast::Client::DBMulti->new(
+        section => $_SECTION,
+        @_,
+    );
+}
 
 
 1;
@@ -13,21 +47,43 @@ __END__
 
 =head1 NAME
 
-GrowthForecast::Client::Declare - ...
+GrowthForecast::Client::Declare - Declaretive interface for GrowthForecast client
 
 =head1 SYNOPSIS
 
-  use GrowthForecast::Client::Declare;
+    use GrowthForecast::Client::Declare;
+
+    my @queries = gf {
+        section member => sub {
+            # post to member/count
+            db(
+                name => 'count',
+                description => 'The number of members',
+                query => 'SELECT COUNT(*) FROM member',
+            );
+        };
+
+        section entry => sub {
+            # post to entry/count, entry/count_unique
+            db_multi(
+                names        => ['count',                'count_unique'],
+                descriptions => ['Total count of posts', 'Posted bloggers'],
+                query => 'SELECT COUNT(*), COUNT(DISTINCT member_id) FROM entry',
+            );
+        };
+    };
 
 =head1 DESCRIPTION
 
-GrowthForecast::Client::Declare is
+GrowthForecast::Client::Declare is a declaretive client library for L<GrowthForecast>
 
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
 
 =head1 SEE ALSO
+
+This library is client for L<GrowthForecast>.
 
 =head1 LICENSE
 

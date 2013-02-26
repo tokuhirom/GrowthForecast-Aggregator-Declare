@@ -13,16 +13,13 @@ my $build = Module::Build->new(
     configure_requires   => { 'Module::Build' => '0.38' },
     requires             => {
         perl => '5.010001',
-        # 'Exporter'                      => '0',
+        'Exporter'                      => '0',
         'parent'                        => '0',
-        # 'Plack'                         => '0.9949',
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
     name        => 'GrowthForecast-Client-Declare',
     module_name => 'GrowthForecast::Client::Declare',
-
-    # script_files => [''],
 
     test_files => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
     recursive_test_files => 1,
