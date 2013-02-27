@@ -58,3 +58,8 @@ Gosuke
 Miyashita
 mysqldiff
 mmm
+RDBMS
+Str
+dbh
+ua
+aggregator

@@ -46,7 +46,7 @@ __END__
 
 =head1 NAME
 
-GrowthForecast::Aggregator::Declare - Declaretive interface for GrowthForecast client
+GrowthForecast::Aggregator::Declare - Declarative interface for GrowthForecast client
 
 =head1 SYNOPSIS
 
@@ -74,7 +74,7 @@ GrowthForecast::Aggregator::Declare - Declaretive interface for GrowthForecast c
 
 =head1 DESCRIPTION
 
-GrowthForecast::Aggregator::Declare is a declaretive client library for L<GrowthForecast>
+GrowthForecast::Aggregator::Declare is a declarative client library for L<GrowthForecast>
 
 =head1 AUTHOR
 

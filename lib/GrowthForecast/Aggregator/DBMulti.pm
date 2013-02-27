@@ -72,7 +72,7 @@ __END__
 
 =head1 NAME
 
-GrwothForecast::Aggregator::DB - Aggerate from RDBMS
+GrwothForecast::Aggregator::DB - Aggregate from RDBMS
 
 =head1 SYNOPSIS
 
@@ -85,7 +85,7 @@ GrwothForecast::Aggregator::DB - Aggerate from RDBMS
 
 =head1 DESCRIPTION
 
-This aggregator aggregates data from RDBMS, and post it to GrwothForecast.
+This aggregator aggregates data from RDBMS, and post it to GrowthForecast.
 
 =head1 CONSTRUCTOR ARGUMENTS
 
