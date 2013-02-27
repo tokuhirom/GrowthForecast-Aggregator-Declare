@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Encode qw(encode_utf8);
+use HTTP::Request::Common;
 
 use Mouse;
 
@@ -56,13 +57,11 @@ sub run {
 
         my $url = "$endpoint/$service/$self->{section}/$name";
 
-        my $res = $ua->post(
-            $url => [
-            ], [
-                number => $numbers[$i],
-                description => encode_utf8($self->descriptions->[$i]),
-            ]
-        );
+        my $req = POST $url, [
+            number => $numbers[$i],
+            description => encode_utf8($self->descriptions->[$i]),
+        ];
+        my $res = $ua->request($req);
         push @res, $res;
     }
     return @res;

@@ -39,7 +39,6 @@ sub db_multi {
     );
 }
 
-
 1;
 __END__
 

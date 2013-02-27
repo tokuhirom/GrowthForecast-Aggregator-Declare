@@ -1,8 +1,14 @@
 .travis.yml
 Build.PL
 Changes
+lib/GrowthForecast/Aggregator/DB.pm
+lib/GrowthForecast/Aggregator/DBMulti.pm
 lib/GrowthForecast/Aggregator/Declare.pm
+LICENSE
 MANIFEST			This list of files
+META.json
+META.yml
+README
 t/00_compile.t
 xt/01_podspell.t
 xt/02_perlcritic.t

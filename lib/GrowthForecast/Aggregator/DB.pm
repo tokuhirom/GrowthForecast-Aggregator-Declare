@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Encode qw(encode_utf8);
+use HTTP::Request::Common;
 
 use Mouse;
 
@@ -51,14 +52,14 @@ sub run {
 
     my $url = "$endpoint/$service/$self->{section}/$self->{name}";
 
-    my $number = $dbh->selectrow_array($self->query, {}, @{$self->binds});
-    my $res = $ua->post(
-        $url => [
-        ], [
-            number => $number,
-            description => encode_utf8($self->description),
-        ]
-    );
+    my $sth = $dbh->prepare($self->query);
+    $sth->execute(@{$self->binds});
+    my ($number) = $sth->fetchrow_array();
+    my $req = POST $url, [
+        number => $number,
+        description => encode_utf8($self->description),
+    ];
+    my $res = $ua->request($req);
     return $res;
 }
 

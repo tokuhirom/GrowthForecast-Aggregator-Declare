@@ -15,6 +15,8 @@ my $build = Module::Build->new(
         perl => '5.010001',
         'Exporter'                      => '0',
         'parent'                        => '0',
+        'HTTP::Request::Common'         => 6,
+        'Mouse' => 0,
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
