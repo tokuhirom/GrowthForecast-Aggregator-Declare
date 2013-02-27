@@ -1,4 +1,6 @@
 Revision history for Perl extension GrowthForecast::Aggregator::Declare
 
-0.01    Tue Feb 26 19:30:25 2013
-    - original version
+0.0.1 2013-02-28T08:08:45
+
+    - initial release
+
