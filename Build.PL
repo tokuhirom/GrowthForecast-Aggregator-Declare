@@ -18,8 +18,8 @@ my $build = Module::Build->new(
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
-    name        => 'GrowthForecast-Client-Declare',
-    module_name => 'GrowthForecast::Client::Declare',
+    name        => 'GrowthForecast-Aggregator-Declare',
+    module_name => 'GrowthForecast::Aggregator::Declare',
 
     test_files => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
     recursive_test_files => 1,

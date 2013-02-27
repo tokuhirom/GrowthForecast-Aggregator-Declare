@@ -1,4 +1,4 @@
-package GrowthForecast::Client::Declare;
+package GrowthForecast::Aggregator::Declare;
 use strict;
 use warnings;
 use 5.008001;
@@ -6,8 +6,8 @@ our $VERSION = '0.01';
 
 use parent qw(Exporter);
 
-use GrowthForecast::Client::DB;
-use GrowthForecast::Client::DBMulti;
+use GrowthForecast::Aggregator::DB;
+use GrowthForecast::Aggregator::DBMulti;
 
 our @EXPORT = qw(gf section db db_multi);
 
@@ -26,14 +26,14 @@ sub section($&) {
 }
 
 sub db {
-    push @_QUERIES, GrowthForecast::Client::DB->new(
+    push @_QUERIES, GrowthForecast::Aggregator::DB->new(
         section => $_SECTION,
         @_,
     );
 }
 
 sub db_multi {
-    push @_QUERIES, GrowthForecast::Client::DBMulti->new(
+    push @_QUERIES, GrowthForecast::Aggregator::DBMulti->new(
         section => $_SECTION,
         @_,
     );
@@ -47,11 +47,11 @@ __END__
 
 =head1 NAME
 
-GrowthForecast::Client::Declare - Declaretive interface for GrowthForecast client
+GrowthForecast::Aggregator::Declare - Declaretive interface for GrowthForecast client
 
 =head1 SYNOPSIS
 
-    use GrowthForecast::Client::Declare;
+    use GrowthForecast::Aggregator::Declare;
 
     my @queries = gf {
         section member => sub {
@@ -75,7 +75,7 @@ GrowthForecast::Client::Declare - Declaretive interface for GrowthForecast clien
 
 =head1 DESCRIPTION
 
-GrowthForecast::Client::Declare is a declaretive client library for L<GrowthForecast>
+GrowthForecast::Aggregator::Declare is a declaretive client library for L<GrowthForecast>
 
 =head1 AUTHOR
 

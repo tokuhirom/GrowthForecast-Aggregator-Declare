@@ -16,7 +16,7 @@ set_spell_cmd($spell_cmd);
 all_pod_files_spelling_ok('lib');
 __DATA__
 Tokuhiro Matsuno
-GrowthForecast::Client::Declare
+GrowthForecast::Aggregator::Declare
 tokuhirom
 AAJKLFJEF
 GMAIL

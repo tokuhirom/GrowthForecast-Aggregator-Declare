@@ -1,7 +1,7 @@
 .travis.yml
 Build.PL
 Changes
-lib/GrowthForecast/Client/Declare.pm
+lib/GrowthForecast/Aggregator/Declare.pm
 MANIFEST			This list of files
 t/00_compile.t
 xt/01_podspell.t

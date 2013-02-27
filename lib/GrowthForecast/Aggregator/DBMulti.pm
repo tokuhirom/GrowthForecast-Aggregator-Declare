@@ -1,4 +1,4 @@
-package GrowthForecast::Client::DB;
+package GrowthForecast::Aggregator::DBMulti;
 use strict;
 use warnings;
 use utf8;
@@ -6,15 +6,15 @@ use Encode qw(encode_utf8);
 
 use Mouse;
 
-has name => (
+has names => (
     is => 'ro',
-    isa => 'Str',
+    isa => 'ArrayRef[Str]',
     required => 1,
 );
 
-has description => (
+has descriptions => (
     is => 'ro',
-    isa => 'Str',
+    isa => 'ArrayRef[Str]',
     required => 1,
 );
 
@@ -41,25 +41,31 @@ no Mouse;
 sub run {
     my $self = shift;
     my %args = @_;
-
-    my $dbh      = $args{dbh}      // die "Missing mandatory parameter: dbh";
-    my $service  = $args{service}  // die "Missing mandatory parameter: service";
+    my $dbh = $args{dbh} // die "Missing mandatory parameter: dbh";
+    my $service = $args{service} // die "Missing mandatory parameter: service";
     my $endpoint = $args{endpoint} // die "Missing mandatory parameter: endpoint";
-    my $ua       = $args{ua}       // die "Missing mandatory parameter: ua";
+    my $ua = $args{ua} // die "Missing mandatory parameter: ua";
 
     $endpoint =~ s!/$!!;
 
-    my $url = "$endpoint/$service/$self->{section}/$self->{name}";
+    my @numbers = $dbh->selectrow_array($self->query, {}, @{$self->binds});
 
-    my $number = $dbh->selectrow_array($self->query, {}, @{$self->binds});
-    my $res = $ua->post(
-        $url => [
-        ], [
-            number => $number,
-            description => encode_utf8($self->description),
-        ]
-    );
-    return $res;
+    my @res;
+    for (my $i=0; $i<@{$self->names}; $i++) {
+        my $name = $self->names->[$i];
+
+        my $url = "$endpoint/$service/$self->{section}/$name";
+
+        my $res = $ua->post(
+            $url => [
+            ], [
+                number => $numbers[$i],
+                description => encode_utf8($self->descriptions->[$i]),
+            ]
+        );
+        push @res, $res;
+    }
+    return @res;
 }
 
 1;
@@ -67,16 +73,14 @@ __END__
 
 =head1 NAME
 
-GrwothForecast::Client::DB - Aggerate from RDBMS
+GrwothForecast::Aggregator::DB - Aggerate from RDBMS
 
 =head1 SYNOPSIS
 
-    my $aggregator = GrowthForecast::Client::DB->new(
-        service => 'blog',
-        section => 'entry',
-        name    => 'count',
-        query   => q{SELECT COUNT(*) FROM entry WHERE status=?},
-        binds   => [1],
+    my $aggregator = GrowthForecast::Aggregator::DBMulti->new(
+        names        => ['count',                'count_unique'],
+        descriptions => ['Total count of posts', 'Posted bloggers'],
+        query => 'SELECT COUNT(*), COUNT(DISTINCT member_id) FROM entry',
     );
     my $res = $aggregator->run();
 
@@ -94,13 +98,13 @@ Section name.
 
 This module send request to "/api/$service/$section/$name"
 
-=item name : Str, required
+=item names : ArrayRef[Str], required
 
-Name of the metrics.
+Names of the metrics.
 
-This module send request to "/api/$service/$section/$name"
+This module send request to "/api/$service/$section/$name->[0]", "/api/$service/$section/$name->[1]", ....
 
-=item description: Str, required
+=item descriptions: ArrayRef[Str], required
 
 Description of the query. The module post it as 'description' parameter.
 
@@ -139,4 +143,3 @@ E.g. http://example.com/api/
 Instance of HTTP client. I tested on L<Furl>.
 
 =back
-
