@@ -2,7 +2,7 @@ package GrowthForecast::Aggregator::Declare;
 use strict;
 use warnings;
 use 5.008001;
-our $VERSION = '0.0.2';
+our $VERSION = '0.1.0';
 
 use parent qw(Exporter);
 
