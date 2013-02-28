@@ -6,6 +6,37 @@ use Test::Requires 'LWP::UserAgent', 'DBI', 'HTTP::Response', 'DBD::SQLite';
 
 use GrowthForecast::Aggregator::Declare;
 
+subtest 'Callback' => sub {
+    my @queries = gf {
+        section member => sub {
+            callback(
+                name => 'count',
+                description => 'member count',
+                code => sub { 4649 },
+            );
+        };
+    };
+    my $ua = LWP::UserAgent->new();
+    no warnings 'redefine';
+    my @REQ;
+    local *LWP::UserAgent::request = sub {
+        push @REQ, $_[1];
+        return HTTP::Response->new;
+    };
+    for (@queries) {
+        $_->run(
+            service => 'test',
+            endpoint => 'http://gf/api/',
+            ua => $ua,
+        );
+    }
+    is(0+@REQ, 1);
+    is($REQ[0]->uri, 'http://gf/api/test/member/count');
+    like($REQ[0]->content, qr/description=member\+count/);
+    like($REQ[0]->content, qr/number=4649/);
+    note $REQ[0]->content;
+};
+
 subtest 'DB' => sub {
     my @queries = gf {
         section member => sub {

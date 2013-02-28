@@ -1,6 +1,7 @@
 .travis.yml
 Build.PL
 Changes
+lib/GrowthForecast/Aggregator/Callback.pm
 lib/GrowthForecast/Aggregator/DB.pm
 lib/GrowthForecast/Aggregator/DBMulti.pm
 lib/GrowthForecast/Aggregator/Declare.pm

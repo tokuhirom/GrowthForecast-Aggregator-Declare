@@ -8,8 +8,9 @@ use parent qw(Exporter);
 
 use GrowthForecast::Aggregator::DB;
 use GrowthForecast::Aggregator::DBMulti;
+use GrowthForecast::Aggregator::Callback;
 
-our @EXPORT = qw(gf section db db_multi);
+our @EXPORT = qw(gf section db db_multi callback);
 
 our $_SECTION;
 our @_QUERIES;
@@ -34,6 +35,13 @@ sub db {
 
 sub db_multi {
     push @_QUERIES, GrowthForecast::Aggregator::DBMulti->new(
+        section => $_SECTION,
+        @_,
+    );
+}
+
+sub callback {
+    push @_QUERIES, GrowthForecast::Aggregator::Callback->new(
         section => $_SECTION,
         @_,
     );
@@ -107,6 +115,10 @@ Create L<GrowthForecast::Aggregator::DB> object using C<< %args >>.
 =item db_multi(%args)
 
 Create L<GrowthForecast::Aggregator::DBMulti> object using C<< %args >>.
+
+=item callback(%args)
+
+Create L<GrowthForecast::Aggregator::Callback> object using C<< %args >>.
 
 =back
 
