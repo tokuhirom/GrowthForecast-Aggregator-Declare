@@ -2,9 +2,14 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Test::Requires 'LWP::UserAgent', 'DBI', 'HTTP::Response', 'DBD::SQLite';
+use Test::Requires 'LWP::UserAgent', 'DBI', 'HTTP::Response';
+use Test::Requires {
+    'DBD::SQLite' => 1.37,
+};
 
 use GrowthForecast::Aggregator::Declare;
+
+diag "DBD::SQLite: $DBD::SQLite::VERSION\n";
 
 subtest 'Callback' => sub {
     my @queries = gf {
